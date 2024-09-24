@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Batch {
+  id       Int       @id @default(autoincrement())
+  name     String
+  course   Course    @relation(fields: [couseId], references: [id])
+  couseId  Int
+  lectures Lecture[]
+}
+
+model Course {
+  id          Int     @id @default(autoincrement())
+  name        String
+  level       String
+  description String
+  imageUrl      String
+  batches     Batch[]
+}
+
+model Instructor {
+  id       Int       @id @default(autoincrement())
+  name     String
+  lectures Lecture[]
+}
+
+model Lecture {
+  id           Int        @id @default(autoincrement())
+  batch        Batch      @relation(fields: [batchId], references: [id])
+  batchId      Int
+  instructor   Instructor @relation(fields: [instructorId], references: [id])
+  instructorId Int
+  date         DateTime   @db.Date
+
+  @@unique([instructorId, date])
+  @@unique([batchId, date])
+}

@@ -15,11 +15,15 @@ or follow the instructions given in [PostgreSQL's official website](https://www.
 Create a file named .env in the project root folder and copy the contents of dot-env-example to .env. Then replace the placeholders with actuals values for 
 each environment variables by following the hints given.
 
-### Step 3: Seed Database
+### Step 3: Create database schema and seed it
 Run the following commands in order in the project root folder after [installing nodejs](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs)
 ```sh
 # Installs the dependencies
 npm install
+```
+```sh
+# Creates database schema
+npx prisma db push
 ```
 ```sh
 # Creates demo user

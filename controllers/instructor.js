@@ -30,4 +30,28 @@ const postInstructors = async (req, res) => {
   }
 };
 
-export { getAllInstructors, postInstructors };
+const getLectures = async (req, res) => {
+  const instructorId = parseInt(req.params.id);
+  try {
+    const lectures = await db.lecture.findMany({
+      where: { instructorId },
+      include: {
+        batch: {
+          include: { course: true },
+        },
+      },
+    });
+    const formattedLectures = lectures.map((l) => ({
+      id: l.id,
+      courseName: l.batch.course.name,
+      batchName: l.batch.name,
+      date: l.date,
+    }));
+    res.json(formattedLectures);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+};
+
+export { getAllInstructors, postInstructors, getLectures };

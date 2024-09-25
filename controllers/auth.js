@@ -56,12 +56,12 @@ const validaionAndLoginMiddlewares = [
   login,
 ];
 
-const logout = (req, res, next) => {
+const logout = (req, res) => {
   req.logout((err) => {
     if (err) {
-      return next(err);
+      res.sendStatus(500);
     }
-    res.redirect("/");
+    res.sendStatus(200);
   });
 };
 

@@ -54,4 +54,25 @@ const getLectures = async (req, res) => {
   }
 };
 
-export { getAllInstructors, postInstructors, getLectures };
+const postLectureForInstructor = async (req, res) => {
+  const instructorId = parseInt(req.params.id);
+  const { batchId, date } = req.body;
+  const batchIdInt = parseInt(batchId);
+  const formattedDate = new Date(date).toISOString();
+  try {
+    const { id: lectureId } = await db.lecture.create({
+      data: { batchId: batchIdInt, instructorId, date: formattedDate },
+    });
+    res.send(lectureId.toString());
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+};
+
+export {
+  getAllInstructors,
+  postInstructors,
+  getLectures,
+  postLectureForInstructor,
+};

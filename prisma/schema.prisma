@@ -10,9 +10,10 @@ datasource db {
 model Batch {
   id       Int       @id @default(autoincrement())
   name     String
-  course   Course    @relation(fields: [couseId], references: [id])
-  couseId  Int
+  course   Course    @relation(fields: [courseId], references: [id])
+  courseId  Int
   lectures Lecture[]
+  @@unique([name,courseId])
 }
 
 model Course {

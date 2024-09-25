@@ -35,6 +35,21 @@ const postCourse = async (req, res) => {
   }
 };
 
+const getBatches = async (req, res) => {
+  const courseId = parseInt(req.params.id);
+  try {
+    const batches = await db.batch.findMany({
+      where: {
+        courseId,
+      },
+    });
+    res.json(batches);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+};
+
 const postBatch = async (req, res) => {
   const courseId = parseInt(req.params.id);
   const { name } = req.body;
@@ -60,4 +75,4 @@ const postBatch = async (req, res) => {
   }
 };
 
-export { getAllCourses, postCourse, postBatch };
+export { getAllCourses, postCourse, getBatches, postBatch };

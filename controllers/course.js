@@ -1,3 +1,5 @@
+import multer from "multer";
+import fs from "node:fs/promises";
 import { db } from "../db.js";
 
 const getAllCourses = async (req, res) => {
@@ -9,6 +11,22 @@ const getAllCourses = async (req, res) => {
     res.sendStatus(500);
   }
 };
+
+const upload = multer();
+
+const postCourseAndMiddlwares = [
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      const path = "./uploads/" + Date.now() + "-" + req.file.originalname;
+      await fs.writeFile(path, req.file.buffer);
+      res.sendStatus(200);
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(500);
+    }
+  },
+];
 
 const postCourse = async (req, res) => {
   const { name, level, description, imageUrl } = req.body;
@@ -75,4 +93,10 @@ const postBatch = async (req, res) => {
   }
 };
 
-export { getAllCourses, postCourse, getBatches, postBatch };
+export {
+  getAllCourses,
+  postCourseAndMiddlwares,
+  postCourse,
+  getBatches,
+  postBatch,
+};

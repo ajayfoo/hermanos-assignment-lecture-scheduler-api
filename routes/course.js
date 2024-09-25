@@ -3,13 +3,14 @@ import {
   getAllCourses,
   getBatches,
   postBatch,
-  postCourse,
+  postCourseAndMiddlwares,
 } from "../controllers/course.js";
 
 const router = Router();
 
 router.get("/", getAllCourses);
-router.post("/", postCourse);
+// router.post("/", postCourse);
+router.post("/", [postCourseAndMiddlwares]);
 router.get("/:id/batches", getBatches);
 router.post("/:id/batches", postBatch);
 

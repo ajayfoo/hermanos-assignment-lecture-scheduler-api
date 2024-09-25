@@ -10,7 +10,7 @@ const postLecture = async (req, res) => {
     res.send(lectureId.toString());
   } catch (err) {
     console.error(err);
-    if (err.name === "PrismaClientValidationError") {
+    if (err.name === "PrismaClientValidationError" || err.code === "P2002") {
       res.sendStatus(400);
     } else {
       res.sendStatus(500);

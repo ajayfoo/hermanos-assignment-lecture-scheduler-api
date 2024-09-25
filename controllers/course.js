@@ -1,6 +1,6 @@
 import multer from "multer";
-import fs from "node:fs/promises";
 import { db } from "../db.js";
+import { saveFileAndGetUrl } from "../utils.js";
 
 const getAllCourses = async (req, res) => {
   try {
@@ -11,22 +11,6 @@ const getAllCourses = async (req, res) => {
     res.sendStatus(500);
   }
 };
-
-const upload = multer();
-
-const postCourseAndMiddlwares = [
-  upload.single("image"),
-  async (req, res) => {
-    try {
-      const path = "./uploads/" + Date.now() + "-" + req.file.originalname;
-      await fs.writeFile(path, req.file.buffer);
-      res.sendStatus(200);
-    } catch (err) {
-      console.error(err);
-      res.sendStatus(500);
-    }
-  },
-];
 
 const postCourse = async (req, res) => {
   const { name, level, description, imageUrl } = req.body;
@@ -42,7 +26,7 @@ const postCourse = async (req, res) => {
         id: true,
       },
     });
-    res.send(courseId.toString());
+    res.json({ id: courseId, imageUrl });
   } catch (err) {
     console.error(err);
     if (err.name === "PrismaClientValidationError") {
@@ -52,6 +36,26 @@ const postCourse = async (req, res) => {
     }
   }
 };
+
+const upload = multer();
+const postCourseAndMiddlwares = [
+  upload.single("image"),
+  async (req, res, next) => {
+    try {
+      const url = await saveFileAndGetUrl(req.file);
+      if (url === null) {
+        res.sendStatus(500);
+        return;
+      }
+      req.body.imageUrl = url;
+      next();
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(500);
+    }
+  },
+  postCourse,
+];
 
 const getBatches = async (req, res) => {
   const courseId = parseInt(req.params.id);
@@ -93,10 +97,4 @@ const postBatch = async (req, res) => {
   }
 };
 
-export {
-  getAllCourses,
-  postCourseAndMiddlwares,
-  postCourse,
-  getBatches,
-  postBatch,
-};
+export { getAllCourses, postCourseAndMiddlwares, getBatches, postBatch };

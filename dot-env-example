@@ -1,0 +1,8 @@
+PORT=3000
+SALT_ROUNDS=12
+DATABASE_URL="<database connection string>"
+ADMIN_CLIENT_URL="<admin panel client's url"
+SUPABASE_PROJECT_URL="<supabase project url retrieved from Supabase Dashboard > [Your project] > Project Settings > Configuration > API > PROJECT URL"
+SUPABASE_ANON_PUBLIC_KEY="<supabase project url retrieved from Supabase Dashboard > [Your project] > Project Settings > Configuration > API > PROJECT API Keys"
+SUPABASE_PASSWORD="<supabase project password created during project creation>"
+EXPRESS_SESSION_SECRET="<strong passphrase>"

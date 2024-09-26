@@ -29,6 +29,17 @@ npx prisma db push
 # Creates demo user
 npm run seed-db
 ```
+### Step 4: Create RLS Policies for Storage Bucket
+
+1. Go to supabase dashboard
+2. Go to your project
+3. Go to "Storage" in the Sidebar
+4. Create a bucket called "main"(Don't create a public bucket)
+5. Go to policies then click "New policy" next to "main" then click "For full customization".
+6. Give a meaningful name for the policy like "Allow CRUD for all users" then check all the checkboxes for "Allowed operation", leave the "Target roles" as is i.e. "Defaults to all (public) roles if none selected".
+7. Click 'Review' then 'Save policy'.
+
+Now you can CRUD files in your 'main' storage bucket.
 ## How to run?
 Please [setup the project](#how-to-setup) before running it.  
 For production
